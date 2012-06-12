@@ -25,7 +25,10 @@ is() {
 	local s="$1"
 	shift
 	local o="$("$@")"
-	ok "$d" [ X"$s" = X"$o" ] || diag "expected \"$s\"; got \"$o\""
+	if ! ok "$d" [ X"$s" = X"$o" ]; then
+		diag "expected: \"$s\""
+		diag "got:      \"$o\""
+	fi
 }
 
 compile() {
