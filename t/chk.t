@@ -31,6 +31,21 @@ is() {
 	fi
 }
 
+like() {
+	local d="$1"
+	shift
+	local s="$1"
+	shift
+	local o="$("$@")"
+	if [[ X$o = X$s ]]; then
+		ok "$d" true
+	else
+		ok "$d" false
+		diag "expected: \"$s\""
+		diag "got:      \"$o\""
+	fi
+}
+
 compile() {
 	local e="tmp-$$"
 	"$@" -o "$e" || return $?
@@ -38,20 +53,26 @@ compile() {
 	./"$e"
 }
 
+
 poly=${1:-'poly.poly'}
+
 
 perl6="$HOME/src/rakudo/rakudo-star-2012.05/perl6"
 whitespace="$HOME/prog/c/whitespace/whitespace"
 bf="bfi"
 sh="busybox sh"
 
-plan 16
+
+
+plan 17
 diag "checking $poly ..."
+
 is sh "I'm a sh script." $sh "$poly"
 is zsh "I'm a zsh script." zsh "$poly"
 is bash "I'm a bash script." bash "$poly"
 is perl "I'm a Perl program." perl "$poly"
-is python "I'm a Python program." python "$poly"
+like python2 "I'm a Python program (* 2.*)." python "$poly"
+like python3 "I'm a Python program (* 3.*)." python3 "$poly"
 is tcl "I'm a tcl script." tclsh "$poly"
 is brainfuck "I'm a brainfuck program." $bf "$poly"
 tmp="tmp-poly-$$.lhs"

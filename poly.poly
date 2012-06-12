@@ -1,6 +1,6 @@
  # /* [	<!-- */ include	<stdio.h> /* 	\
 	#`{{\
-`""""true ;    	  			\
+"true" if 0 != 0 and	q != """0"	;	`	\
 	\
 if [ -n "$ZSH_VERSION" ]; then		 		 	\
 	\
@@ -11,7 +11,7 @@ elif [ -n "$BASH_VERSION" ]; then		    	\
     echo exec	echo I\'m a bash script.; \
 else	\
     echo exec	echo	I\'m	a sh	script.;		\
-fi`;	#\
+fi`;	#!;#\
 BEGIN{print"I'm a ", 0 ? "Ruby"	:"Perl",	" program.\n";	exit; }  
 	#\
 %q~     		 	  	
@@ -74,9 +74,11 @@ printf("I'm a C++ program (trigraphs %sabled).\n",	 			 \
 -]<- - -.<.>+.->>++++++++++[<+++++++++++>-]<++++.<.>>>++++++++++[ \
 <++++++++++>-]<+++++.<<<<+.->>>>- - -.<+++.- - -<++.- ->>>>>+++++ \
 +++++[<+++++++++++>-]<- - -.<<<<<.<+++.>>>.<<<-.- ->>>>+.<.<.<<.> \
-++++++++++++++.[-]++++++++++"""`
+++++++++++++++.[-]++++++++++""" else 0
  # \
-print "I'm a Python program."; """[-][--><html><head>
+from platform import * # \
+print("I'm a Python program (%s %s)." % # [-][ \
+(python_implementation(), python_version())); """--><html><head>
 <!--:--><title>I'm a HTML page</title></head><body>
 <!--:--><h1>I'm a <marquee><blink>horrible HTML</blink></marquee> page</h1>
 <!--:--><script language="JavaScript">
