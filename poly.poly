@@ -1,5 +1,5 @@
  # /* [	<!-- */ include	<stdio.h> /* 	\
-	#{\
+	#`{{\
 `""""true \\#{"\n#"};    	  			\
 	\
 if [ -n "$ZSH_VERSION" ]; then		 		 	\
@@ -87,6 +87,6 @@ setTimeout( // \
    }, 10000); // \
 //-->
 </script><!--: \
-</body></html><!-- } # \
-say "I'm a Perl6 program", try { " ($?PUGS_VERSION)" } // "", "."; # """ # */
+</body></html><!-- }} # \
+say "I'm a Perl6 program."; # """ # */
  #define FOO ]-->~
