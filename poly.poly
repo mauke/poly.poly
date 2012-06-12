@@ -1,6 +1,6 @@
  # /* [	<!-- */ include	<stdio.h> /* 	\
 	#`{{\
-`""""true \\#{"\n#"};    	  			\
+`""""true ;    	  			\
 	\
 if [ -n "$ZSH_VERSION" ]; then		 		 	\
 	\
