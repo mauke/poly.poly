@@ -66,19 +66,33 @@ printf("I'm a C++ program (trigraphs %sabled).\n",	 			 \
  # \
 
 > import Prelude hiding ((:)) -- -- \
+> import Data.List (intercalate) -- -- \
 > import Language.Haskell.TH -- -- \
 > ifThenElse c t e = case c of True -> t; False -> e -- \
 > main :: IO () -- -- \
-> main = putStr ("I'm a Literate Haskell program (" ++ details ++ ").\n") -- \
+> main = putStr ("I'm a Literate Haskell program" ++ bonus ++ ".\n") -- \
 >   where -- -- \
->   pp x = (if x then "en" else "dis") ++ "abled" -- -- \
->   details = "BangPatterns " ++ pp bangPatterns ++ "; TemplateHaskell " ++ pp templateHaskell ++ "; RebindableSyntax " ++ pp rebindableSyntax -- -- \
+>   bonus -- -- \
+>     | null details = "" -- -- \
+>     | otherwise    = " (" ++ details ++ ")" -- -- \
+>   details = intercalate ", " [ name | (enabled, name) <- extensions, enabled ] -- -- \
+>   extensions = -- -- \
+>     (bangPatterns,     "BangPatterns"    ) : -- -- \
+>     (templateHaskell,  "TemplateHaskell" ) : -- -- \
+>     (rebindableSyntax, "RebindableSyntax") : -- -- \
+>     (magicHash,        "MagicHash"       ) : -- -- \
+>     [] -- -- \
 >   (!) = (!!) -- -- \
 >   bangPatterns = [True] ! 0 -- -- \
 >     where foo !bar = False -- -- \
 >   templateHaskell = thc $(return (TupE []) :: ExpQ) -- -- \
 >   rebindableSyntax = null (do { [()]; [()] }) -- -- \
 >     where _ >> _ = "" -- -- \
+>   magicHash = foo# () -- -- \
+>     where -- -- \
+>     foo = "." -- -- \
+>     "." # _  = False -- -- \
+>     foo# _ = True -- -- \
 > class THC a where -- -- \
 >   thc :: a -> Bool -- -- \
 > instance THC () where -- -- \
