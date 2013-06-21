@@ -65,8 +65,22 @@ printf("I'm a C++ program (trigraphs %sabled).\n",	 			 \
 } /*
  # \
 
+> import Language.Haskell.TH -- -- \
 > main :: IO () -- -- \
-> main = putStr "I'm a Literate Haskell program.\n"
+> main = putStr ("I'm a Literate Haskell program (" ++ details ++ ").\n") -- \
+>   where -- -- \
+>   pp x = (if x then "en" else "dis") ++ "abled" -- -- \
+>   details = "BangPatterns " ++ pp bangPatterns ++ "; TemplateHaskell " ++ pp templateHaskell -- -- \
+>   (!) = (!!) -- -- \
+>   bangPatterns = [True] ! 0 -- -- \
+>     where foo !bar = False -- -- \
+>   templateHaskell = thc $(return (TupE []) :: ExpQ) -- -- \
+> class THC a where -- -- \
+>   thc :: a -> Bool -- -- \
+> instance THC () where -- -- \
+>   thc _ = True -- -- \
+> instance THC (Q a) where -- -- \
+>   thc _ = False
 
  # \
 ]>++++++++[<+++++++++>-]<+.>>++++[<++++++++++>-]<-.[-]>++++++++++ \

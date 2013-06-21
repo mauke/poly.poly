@@ -64,7 +64,7 @@ sh="busybox sh"
 
 
 
-plan 17
+plan 20
 diag "checking $poly ..."
 
 is sh "I'm a sh script." $sh "$poly"
@@ -77,12 +77,15 @@ is tcl "I'm a tcl script." tclsh "$poly"
 is brainfuck "I'm a brainfuck program." $bf "$poly"
 tmp="tmp-poly-$$.lhs"
 ln -s "$poly" "$tmp"
-is haskell "I'm a Literate Haskell program." runhaskell "$tmp"
+is haskell       "I'm a Literate Haskell program (BangPatterns disabled; TemplateHaskell disabled)." runhaskell "$tmp"
+is haskell-bp    "I'm a Literate Haskell program (BangPatterns enabled; TemplateHaskell disabled)."  runhaskell -XBangPatterns "$tmp"
+is haskell-th    "I'm a Literate Haskell program (BangPatterns disabled; TemplateHaskell enabled)."  runhaskell -XTemplateHaskell "$tmp"
+is haskell-bp-th "I'm a Literate Haskell program (BangPatterns enabled; TemplateHaskell enabled)."   runhaskell -XBangPatterns -XTemplateHaskell "$tmp"
 rm "$tmp"
-is c "I'm a C program (C89 with // comments, trigraphs disabled)." compile gcc -Wno-trigraphs -Wno-unused -xc "$poly"
-is c89 "I'm a C program (C89, trigraphs enabled)." compile gcc -std=c89 -pedantic -W -Wall -Wno-trigraphs -Wno-unused -xc "$poly"
-is c99 "I'm a C program (C99, trigraphs enabled)." compile gcc -std=c99 -pedantic -W -Wall -Wno-trigraphs -Wno-unused -xc "$poly"
-is c++ "I'm a C++ program (trigraphs disabled)." compile g++ -Wno-trigraphs -xc++ "$poly"
+is c   "I'm a C program (C89 with // comments, trigraphs disabled)." compile gcc -Wno-trigraphs -Wno-unused -xc "$poly"
+is c89 "I'm a C program (C89, trigraphs enabled)."                   compile gcc -std=c89 -pedantic -W -Wall -Wno-trigraphs -Wno-unused -xc "$poly"
+is c99 "I'm a C program (C99, trigraphs enabled)."                   compile gcc -std=c99 -pedantic -W -Wall -Wno-trigraphs -Wno-unused -xc "$poly"
+is c++ "I'm a C++ program (trigraphs disabled)."                     compile g++ -Wno-trigraphs -xc++ "$poly"
 is ruby "I'm a Ruby program." ruby "$poly"
 is whitespace "I'm a whitespace program." "$whitespace" "$poly"
 is make "I'm a Makefile." make -f "$poly"
