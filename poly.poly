@@ -65,16 +65,20 @@ printf("I'm a C++ program (trigraphs %sabled).\n",	 			 \
 } /*
  # \
 
+> import Prelude hiding ((:)) -- -- \
 > import Language.Haskell.TH -- -- \
+> ifThenElse c t e = case c of True -> t; False -> e -- \
 > main :: IO () -- -- \
 > main = putStr ("I'm a Literate Haskell program (" ++ details ++ ").\n") -- \
 >   where -- -- \
 >   pp x = (if x then "en" else "dis") ++ "abled" -- -- \
->   details = "BangPatterns " ++ pp bangPatterns ++ "; TemplateHaskell " ++ pp templateHaskell -- -- \
+>   details = "BangPatterns " ++ pp bangPatterns ++ "; TemplateHaskell " ++ pp templateHaskell ++ "; RebindableSyntax " ++ pp rebindableSyntax -- -- \
 >   (!) = (!!) -- -- \
 >   bangPatterns = [True] ! 0 -- -- \
 >     where foo !bar = False -- -- \
 >   templateHaskell = thc $(return (TupE []) :: ExpQ) -- -- \
+>   rebindableSyntax = null (do { [()]; [()] }) -- -- \
+>     where _ >> _ = "" -- -- \
 > class THC a where -- -- \
 >   thc :: a -> Bool -- -- \
 > instance THC () where -- -- \

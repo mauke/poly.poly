@@ -64,7 +64,7 @@ sh="busybox sh"
 
 
 
-plan 20
+plan 21
 diag "checking $poly ..."
 
 is sh "I'm a sh script." $sh "$poly"
@@ -77,10 +77,11 @@ is tcl "I'm a tcl script." tclsh "$poly"
 is brainfuck "I'm a brainfuck program." $bf "$poly"
 tmp="tmp-poly-$$.lhs"
 ln -s "$poly" "$tmp"
-is haskell       "I'm a Literate Haskell program (BangPatterns disabled; TemplateHaskell disabled)." runhaskell "$tmp"
-is haskell-bp    "I'm a Literate Haskell program (BangPatterns enabled; TemplateHaskell disabled)."  runhaskell -XBangPatterns "$tmp"
-is haskell-th    "I'm a Literate Haskell program (BangPatterns disabled; TemplateHaskell enabled)."  runhaskell -XTemplateHaskell "$tmp"
-is haskell-bp-th "I'm a Literate Haskell program (BangPatterns enabled; TemplateHaskell enabled)."   runhaskell -XBangPatterns -XTemplateHaskell "$tmp"
+is haskell          "I'm a Literate Haskell program (BangPatterns disabled; TemplateHaskell disabled; RebindableSyntax disabled)." runhaskell "$tmp"
+is haskell-bp       "I'm a Literate Haskell program (BangPatterns enabled; TemplateHaskell disabled; RebindableSyntax disabled)."  runhaskell -XBangPatterns "$tmp"
+is haskell-th       "I'm a Literate Haskell program (BangPatterns disabled; TemplateHaskell enabled; RebindableSyntax disabled)."  runhaskell -XTemplateHaskell "$tmp"
+is haskell-rs       "I'm a Literate Haskell program (BangPatterns disabled; TemplateHaskell disabled; RebindableSyntax enabled)."  runhaskell -XRebindableSyntax "$tmp"
+is haskell-bp-th-rs "I'm a Literate Haskell program (BangPatterns enabled; TemplateHaskell enabled; RebindableSyntax enabled)."   runhaskell -XBangPatterns -XTemplateHaskell -XRebindableSyntax "$tmp"
 rm "$tmp"
 is c   "I'm a C program (C89 with // comments, trigraphs disabled)." compile gcc -Wno-trigraphs -Wno-unused -xc "$poly"
 is c89 "I'm a C program (C89, trigraphs enabled)."                   compile gcc -std=c89 -pedantic -W -Wall -Wno-trigraphs -Wno-unused -xc "$poly"
