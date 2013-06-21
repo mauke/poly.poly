@@ -57,7 +57,7 @@ compile() {
 poly=${1:-'poly.poly'}
 
 
-perl6="$HOME/src/rakudo/rakudo-star-2012.05/perl6"
+perl6="$HOME/src/rakudo/rakudo-star-2013.05/perl6"
 whitespace="$HOME/prog/c/whitespace/whitespace"
 bf="bfi"
 sh="busybox sh"
