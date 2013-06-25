@@ -68,6 +68,11 @@ printf("I'm a C++ program (trigraphs %sabled).\n",	 			 \
 > import Prelude hiding ((:)) -- -- \
 > import Data.List (intercalate) -- -- \
 > import Language.Haskell.TH -- -- \
+> import Data.String -- -- \
+> default (S, String, Integer, Int) -- -- \
+> data S = S -- -- \
+> instance Eq S where _ == _ = False -- -- \
+> instance IsString S where fromString = const S -- -- \
 > ifThenElse c t e = case c of True -> t; False -> e -- \
 > main :: IO () -- -- \
 > main = putStr ("I'm a Literate Haskell program" ++ bonus ++ ".\n") -- \
@@ -77,22 +82,24 @@ printf("I'm a C++ program (trigraphs %sabled).\n",	 			 \
 >     | otherwise    = " (" ++ details ++ ")" -- -- \
 >   details = intercalate ", " [ name | (enabled, name) <- extensions, enabled ] -- -- \
 >   extensions = -- -- \
->     (bangPatterns,     "BangPatterns"    ) : -- -- \
->     (templateHaskell,  "TemplateHaskell" ) : -- -- \
->     (rebindableSyntax, "RebindableSyntax") : -- -- \
->     (magicHash,        "MagicHash"       ) : -- -- \
+>     (bangPatterns,      "BangPatterns"     ) : -- -- \
+>     (templateHaskell,   "TemplateHaskell"  ) : -- -- \
+>     (rebindableSyntax,  "RebindableSyntax" ) : -- -- \
+>     (magicHash,         "MagicHash"        ) : -- -- \
+>     (overloadedStrings, "OverloadedStrings") : -- -- \
 >     [] -- -- \
 >   (!) = (!!) -- -- \
 >   bangPatterns = [True] ! 0 -- -- \
 >     where foo !bar = False -- -- \
 >   templateHaskell = thc $(return (TupE []) :: ExpQ) -- -- \
 >   rebindableSyntax = null (do { [()]; [()] }) -- -- \
->     where _ >> _ = "" -- -- \
+>     where _ >> _ = [] :: [()] -- -- \
 >   magicHash = foo# () -- -- \
 >     where -- -- \
->     foo = "." -- -- \
+>     foo = ['.'] -- -- \
 >     "." # _  = False -- -- \
 >     foo# _ = True -- -- \
+>   overloadedStrings = "" /= "" -- -- \
 > class THC a where -- -- \
 >   thc :: a -> Bool -- -- \
 > instance THC () where -- -- \
