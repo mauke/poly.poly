@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 plan() {
 	echo "1..$1"
