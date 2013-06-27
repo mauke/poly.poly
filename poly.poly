@@ -80,13 +80,14 @@ printf("I'm a C++ program (trigraphs %sabled).\n",	 			 \
 >   bonus -- -- \
 >     | null details = "" -- -- \
 >     | otherwise    = " (" ++ details ++ ")" -- -- \
->   details = intercalate ", " [ name | (enabled, name) <- extensions, enabled ] -- -- \
+>   details = intercalate ", " [ name | (enabled, name) <- extensions, enabled ] :: String -- -- \
 >   extensions = -- -- \
->     (bangPatterns,      "BangPatterns"     ) : -- -- \
->     (templateHaskell,   "TemplateHaskell"  ) : -- -- \
->     (rebindableSyntax,  "RebindableSyntax" ) : -- -- \
->     (magicHash,         "MagicHash"        ) : -- -- \
->     (overloadedStrings, "OverloadedStrings") : -- -- \
+>     (bangPatterns,              "BangPatterns"             ) : -- -- \
+>     (templateHaskell,           "TemplateHaskell"          ) : -- -- \
+>     (rebindableSyntax,          "RebindableSyntax"         ) : -- -- \
+>     (magicHash,                 "MagicHash"                ) : -- -- \
+>     (overloadedStrings,         "OverloadedStrings"        ) : -- -- \
+>     (noMonomorphismRestriction, "NoMonomorphismRestriction") : -- -- \
 >     [] -- -- \
 >   (!) = (!!) -- -- \
 >   bangPatterns = [True] ! 0 -- -- \
@@ -100,6 +101,10 @@ printf("I'm a C++ program (trigraphs %sabled).\n",	 			 \
 >     "." # _  = False -- -- \
 >     foo# _ = True -- -- \
 >   overloadedStrings = "" /= "" -- -- \
+>   noMonomorphismRestriction = show foo == "0" -- -- \
+>     where -- -- \
+>     foo = 0 -- -- \
+>     bar = foo :: Double -- -- \
 > class THC a where -- -- \
 >   thc :: a -> Bool -- -- \
 > instance THC () where -- -- \
