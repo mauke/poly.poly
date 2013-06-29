@@ -69,7 +69,7 @@ printf("I'm a C++ program (trigraphs %sabled).\n",	 			 \
 > import Data.List (intercalate) -- -- \
 > import Language.Haskell.TH -- -- \
 > import Data.String -- -- \
-> default (S, String, Integer, Int) -- -- \
+> default (S, String, Integer) -- -- \
 > data S = S -- -- \
 > instance Eq S where _ == _ = False -- -- \
 > instance IsString S where fromString = const S -- -- \
