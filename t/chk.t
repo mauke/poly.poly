@@ -65,7 +65,7 @@ sh="busybox sh"
 
 
 
-plan 25
+plan 26
 diag "checking $poly ..."
 
 is sh "I'm a sh script." $sh "$poly"
@@ -86,7 +86,8 @@ is haskell-mh  "I'm a Literate Haskell program (MagicHash)."                 "$r
 is haskell-os  "I'm a Literate Haskell program (OverloadedStrings)."         "$runhaskell" -XOverloadedStrings "$tmp"
 is haskell-nm  "I'm a Literate Haskell program (NoMonomorphismRestriction)." "$runhaskell" -XNoMonomorphismRestriction "$tmp"
 is haskell-st  "I'm a Literate Haskell program (ScopedTypeVariables)."       "$runhaskell" -XScopedTypeVariables "$tmp"
-is haskell-all "I'm a Literate Haskell program (BangPatterns, TemplateHaskell, RebindableSyntax, MagicHash, OverloadedStrings, NoMonomorphismRestriction, ScopedTypeVariables)." "$runhaskell" -XBangPatterns -XTemplateHaskell -XRebindableSyntax -XMagicHash -XOverloadedStrings -XNoMonomorphismRestriction -XScopedTypeVariables "$tmp"
+is haskell-cpp "I'm a Literate Haskell program (CPP)."                       "$runhaskell" -XCPP "$tmp"
+is haskell-all "I'm a Literate Haskell program (BangPatterns, TemplateHaskell, RebindableSyntax, MagicHash, OverloadedStrings, NoMonomorphismRestriction, ScopedTypeVariables, CPP)." "$runhaskell" -XBangPatterns -XTemplateHaskell -XRebindableSyntax -XMagicHash -XOverloadedStrings -XNoMonomorphismRestriction -XScopedTypeVariables -XCPP "$tmp"
 rm "$tmp"
 is c   "I'm a C program (C89 with // comments, trigraphs disabled)." compile gcc -Wno-trigraphs -Wno-unused -xc "$poly"
 is c89 "I'm a C program (C89, trigraphs enabled)."                   compile gcc -std=c89 -pedantic -W -Wall -Wno-trigraphs -Wno-unused -xc "$poly"

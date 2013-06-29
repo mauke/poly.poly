@@ -64,61 +64,41 @@ printf("I'm a C++ program (trigraphs %sabled).\n",	 			 \
     return 0; \
 } /*
  # \
-
-> import Prelude hiding ((:)) -- -- \
-> import Data.List (intercalate) -- -- \
-> import Language.Haskell.TH -- -- \
-> import Data.String -- -- \
-> default (S, String, Integer) -- -- \
-> data S = S -- -- \
-> instance Eq S where _ == _ = False -- -- \
-> instance IsString S where fromString = const S -- -- \
-> ifThenElse c t e = case c of True -> t; False -> e -- \
-> main :: IO () -- -- \
-> main = putStr ("I'm a Literate Haskell program" ++ bonus ++ ".\n") -- \
->   where -- -- \
->   bonus -- -- \
->     | null details = "" -- -- \
->     | otherwise    = " (" ++ details ++ ")" -- -- \
->   details = intercalate ", " [ name | (enabled, name) <- extensions, enabled ] :: String -- -- \
->   extensions = -- -- \
->     (bangPatterns,              "BangPatterns"             ) : -- -- \
->     (templateHaskell,           "TemplateHaskell"          ) : -- -- \
->     (rebindableSyntax,          "RebindableSyntax"         ) : -- -- \
->     (magicHash,                 "MagicHash"                ) : -- -- \
->     (overloadedStrings,         "OverloadedStrings"        ) : -- -- \
->     (noMonomorphismRestriction, "NoMonomorphismRestriction") : -- -- \
->     (scopedTypeVariables,       "ScopedTypeVariables"      ) : -- -- \
->     [] -- -- \
->   (!) = (!!) -- -- \
->   bangPatterns = [True] ! 0 -- -- \
->     where foo !bar = False -- -- \
->   templateHaskell = thc $(return (TupE []) :: ExpQ) -- -- \
->   rebindableSyntax = null (do { [()]; [()] }) -- -- \
->     where _ >> _ = [] :: [()] -- -- \
->   magicHash = foo# () -- -- \
->     where -- -- \
->     foo = ['.'] -- -- \
->     "." # _  = False -- -- \
->     foo# _ = True -- -- \
->   overloadedStrings = "" /= "" -- -- \
->   noMonomorphismRestriction = show foo == "0" -- -- \
->     where -- -- \
->     foo = 0 -- -- \
->     bar = foo :: Double -- -- \
->   scopedTypeVariables = stv (0 :: Double) == "0.0" -- -- \
-> class THC a where -- -- \
->   thc :: a -> Bool -- -- \
-> instance THC () where -- -- \
->   thc _ = True -- -- \
-> instance THC (Q a) where -- -- \
->   thc _ = False -- -- \
-> class (Show a, Num a) => STV a where -- -- \
->   stv :: a -> String -- -- \
->   stv _ = show (f 0) -- -- \
->     where -- -- \
->     f = id :: a -> a -- -- \
-> instance STV Double -- -- \
+\begin{code}
+import Prelude hiding ((:)); import Data.List (intercalate); import Language.Haskell.TH; import Data.String; default (S, String, Integer); data S = S; instance Eq S where { _ == _ = False }; instance IsString S where { fromString = const S }; ifThenElse c t e = case c of True -> t; False -> e
+cPP = False; {-
+#define cPP True
+-} main :: IO ()
+main = putStr ("I'm a Literate Haskell program" ++ bonus ++ ".\n") where
+  _ = (); bonus | null details = "" | otherwise = " (" ++ details ++ ")"
+  details = intercalate ", " [ name | (enabled, name) <- extensions, enabled ] :: String
+  extensions =
+    (bangPatterns,              "BangPatterns"             ) :
+    (templateHaskell,           "TemplateHaskell"          ) :
+    (rebindableSyntax,          "RebindableSyntax"         ) :
+    (magicHash,                 "MagicHash"                ) :
+    (overloadedStrings,         "OverloadedStrings"        ) :
+    (noMonomorphismRestriction, "NoMonomorphismRestriction") :
+    (scopedTypeVariables,       "ScopedTypeVariables"      ) :
+    (cPP,                       "CPP"                      ) : []
+  (!) = (!!)
+  bangPatterns = [True] ! 0 where foo !bar = False
+  templateHaskell = thc $(return (TupE []) :: ExpQ)
+  rebindableSyntax = null (do { [()]; [()] })
+    where _ >> _ = [] :: [()]
+  magicHash = foo# () where
+    foo = ['.']; "." # _  = False; foo# _ = True
+  overloadedStrings = "" /= ""
+  noMonomorphismRestriction = show foo == "0" where
+    foo = 0
+    bar = foo :: Double
+  scopedTypeVariables = stv (0 :: Double) == "0.0"
+class THC a where { thc :: a -> Bool }; instance THC () where { thc _ = True }; instance THC (Q a) where { thc _ = False }; class (Show a, Num a) => STV a where
+  stv :: a -> String
+  stv = const $ show (f 0) where
+    f = id :: a -> a
+instance STV Double -- : \
+\end{code}
 
  # \
 ]>++++++++[<+++++++++>-]<+.>>++++[<++++++++++>-]<-.[-]>++++++++++ \
