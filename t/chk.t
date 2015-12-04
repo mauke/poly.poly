@@ -89,7 +89,7 @@ is haskell-st  "I'm a Literate Haskell program (ScopedTypeVariables)."       "$r
 is haskell-cpp "I'm a Literate Haskell program (CPP)."                       "$runhaskell" -XCPP "$tmp"
 is haskell-all "I'm a Literate Haskell program (BangPatterns, TemplateHaskell, RebindableSyntax, MagicHash, OverloadedStrings, NoMonomorphismRestriction, ScopedTypeVariables, CPP)." "$runhaskell" -XBangPatterns -XTemplateHaskell -XRebindableSyntax -XMagicHash -XOverloadedStrings -XNoMonomorphismRestriction -XScopedTypeVariables -XCPP "$tmp"
 rm "$tmp"
-is c   "I'm a C program (C89 with // comments, trigraphs disabled)." compile gcc -Wno-trigraphs -Wno-unused -xc "$poly"
+is c   "I'm a C program (C89 with // comments, trigraphs disabled)." compile gcc -std=gnu89 -Wno-trigraphs -Wno-unused -xc "$poly"
 is c89 "I'm a C program (C89, trigraphs enabled)."                   compile gcc -std=c89 -pedantic -W -Wall -Wno-trigraphs -Wno-unused -xc "$poly"
 is c99 "I'm a C program (C99, trigraphs enabled)."                   compile gcc -std=c99 -pedantic -W -Wall -Wno-trigraphs -Wno-unused -xc "$poly"
 is c++ "I'm a C++ program (trigraphs disabled)."                     compile g++ -Wno-trigraphs -xc++ "$poly"
