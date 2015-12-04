@@ -71,7 +71,7 @@ cPP = False; {-
 -} main :: IO ()
 main = putStr ("I'm a Literate Haskell program" ++ bonus ++ ".\n") where
   _ = (); bonus | null details = "" | otherwise = " (" ++ details ++ ")"
-  details = intercalate ", " [ name | (enabled, name) <- extensions, enabled ] :: String
+  details = intercalate ", " [ name | (True, name) <- extensions ] :: String
   extensions =
     (bangPatterns,              "BangPatterns"             ) :
     (templateHaskell,           "TemplateHaskell"          ) :
