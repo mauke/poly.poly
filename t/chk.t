@@ -65,7 +65,7 @@ sh="busybox sh"
 
 
 
-plan 26
+plan 272
 diag "checking $poly ..."
 
 is sh "I'm a sh script." $sh "$poly"
@@ -76,19 +76,6 @@ like python2 "I'm a Python program (* 2.*)." python2 "$poly"
 like python3 "I'm a Python program (* 3.*)." python3 "$poly"
 is tcl "I'm a tcl script." tclsh "$poly"
 is brainfuck "I'm a brainfuck program." $bf "$poly"
-tmp="tmp-poly-$$.lhs"
-ln -s "$poly" "$tmp"
-is haskell     "I'm a Literate Haskell program."                             "$runhaskell" "$tmp"
-is haskell-bp  "I'm a Literate Haskell program (BangPatterns)."              "$runhaskell" -XBangPatterns "$tmp"
-is haskell-th  "I'm a Literate Haskell program (TemplateHaskell)."           "$runhaskell" -XTemplateHaskell "$tmp"
-is haskell-rs  "I'm a Literate Haskell program (RebindableSyntax)."          "$runhaskell" -XRebindableSyntax "$tmp"
-is haskell-mh  "I'm a Literate Haskell program (MagicHash)."                 "$runhaskell" -XMagicHash "$tmp"
-is haskell-os  "I'm a Literate Haskell program (OverloadedStrings)."         "$runhaskell" -XOverloadedStrings "$tmp"
-is haskell-nm  "I'm a Literate Haskell program (NoMonomorphismRestriction)." "$runhaskell" -XNoMonomorphismRestriction "$tmp"
-is haskell-st  "I'm a Literate Haskell program (ScopedTypeVariables)."       "$runhaskell" -XScopedTypeVariables "$tmp"
-is haskell-cpp "I'm a Literate Haskell program (CPP)."                       "$runhaskell" -XCPP "$tmp"
-is haskell-all "I'm a Literate Haskell program (BangPatterns, TemplateHaskell, RebindableSyntax, MagicHash, OverloadedStrings, NoMonomorphismRestriction, ScopedTypeVariables, CPP)." "$runhaskell" -XBangPatterns -XTemplateHaskell -XRebindableSyntax -XMagicHash -XOverloadedStrings -XNoMonomorphismRestriction -XScopedTypeVariables -XCPP "$tmp"
-rm "$tmp"
 is c   "I'm a C program (C89 with // comments, trigraphs disabled)." compile gcc -std=gnu89 -Wno-trigraphs -Wno-unused -xc "$poly"
 is c89 "I'm a C program (C89, trigraphs enabled)."                   compile gcc -std=c89 -pedantic -W -Wall -Wno-trigraphs -Wno-unused -xc "$poly"
 is c99 "I'm a C program (C99, trigraphs enabled)."                   compile gcc -std=c99 -pedantic -W -Wall -Wno-trigraphs -Wno-unused -xc "$poly"
@@ -97,3 +84,11 @@ is ruby "I'm a Ruby program." ruby "$poly"
 is whitespace "I'm a whitespace program." "$whitespace" "$poly"
 is make "I'm a Makefile." make -f "$poly"
 is perl6 "I'm a Perl6 program." "$perl6" "$poly"
+tmp="tmp-poly-$$.lhs"
+ln -s "$poly" "$tmp"
+for exts in ''{,-BangPatterns}{,-TemplateHaskell}{,-RebindableSyntax}{,-MagicHash}{,-OverloadedStrings}{,-NoMonomorphismRestriction}{,-ScopedTypeVariables}{,-CPP}; do
+    desc="${exts#-}"
+    desc="${desc//-/, }"
+    is "haskell${exts//[a-z]/}" "I'm a Literate Haskell program${desc:+ ($desc)}." "$runhaskell" ${exts//-/ -X} "$tmp"
+done
+rm "$tmp"
