@@ -1,72 +1,19 @@
 #!/bin/bash
-
-plan() {
-	echo "1..$1"
-	TestCounter=0
-}
-
-diag() {
-	echo "# $@"
-}
-
-ok() {
-	local d="$1"
-	shift
-	let TestCounter++
-	local p=""
-	"$@" || p="not "
-	echo "${p}ok $TestCounter - $d"
-	[ X = X"$p" ]
-}
-
-is() {
-	local d="$1"
-	shift
-	local s="$1"
-	shift
-	local o="$("$@")"
-	if ! ok "$d" [ X"$s" = X"$o" ]; then
-		diag "expected: \"$s\""
-		diag "got:      \"$o\""
-	fi
-}
-
-like() {
-	local d="$1"
-	shift
-	local s="$1"
-	shift
-	local o="$("$@")"
-	if [[ X$o = X$s ]]; then
-		ok "$d" true
-	else
-		ok "$d" false
-		diag "expected: \"$s\""
-		diag "got:      \"$o\""
-	fi
-}
-
-compile() {
-	local e="tmp-$$"
-	"$@" -o "$e" || return $?
-	trap "rm '$e'" RETURN
-	./"$e"
-}
+shopt -s extglob
+. "${0%%+([!/])}/test-simple.sh" || exit 1
 
 
 poly=${1:-'poly.poly'}
 
-
 runhaskell="runhaskell"
-perl6="$HOME/src/rakudo/rakudo-star-2013.05/perl6"
+perl6="$HOME/src/rakudo-star-2015.11/perl6"
 whitespace="$HOME/prog/c/whitespace/whitespace"
 bf="bfi"
 sh="busybox sh"
 
 
-
-plan 272
-diag "checking $poly ..."
+note "checking $poly ..."
+plan 18
 
 is sh "I'm a sh script." $sh "$poly"
 is zsh "I'm a zsh script." zsh "$poly"
@@ -86,7 +33,7 @@ is make "I'm a Makefile." make -f "$poly"
 is perl6 "I'm a Perl6 program." "$perl6" "$poly"
 tmp="tmp-poly-$$.lhs"
 ln -s "$poly" "$tmp"
-for exts in ''{,-BangPatterns}{,-TemplateHaskell}{,-RebindableSyntax}{,-MagicHash}{,-OverloadedStrings}{,-NoMonomorphismRestriction}{,-ScopedTypeVariables}{,-CPP}; do
+for exts in ''{,-BangPatterns-TemplateHaskell-RebindableSyntax-MagicHash-OverloadedStrings-NoMonomorphismRestriction-ScopedTypeVariables-CPP}; do
     desc="${exts#-}"
     desc="${desc//-/, }"
     is "haskell${exts//[a-z]/}" "I'm a Literate Haskell program${desc:+ ($desc)}." "$runhaskell" ${exts//-/ -X} "$tmp"
