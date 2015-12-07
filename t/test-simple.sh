@@ -3,6 +3,10 @@ plan() {
     TestCounter=0
 }
 
+done_testing() {
+    echo "1..$TestCounter"
+}
+
 note() {
     echo "# $@"
 }

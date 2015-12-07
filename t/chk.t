@@ -34,9 +34,9 @@ is make "I'm a Makefile." make -f "$poly"
 is perl6 "I'm a Perl6 program." "$perl6" "$poly"
 tmp="tmp-poly-$$.lhs"
 ln -s "$poly" "$tmp"
-for exts in ''{,-BangPatterns-TemplateHaskell-RebindableSyntax-MagicHash-OverloadedStrings-NoMonomorphismRestriction-ScopedTypeVariables-CPP-UnicodeSyntax}; do
+trap "rm $tmp" EXIT INT TERM
+for exts in ''{,-BangPatterns-TemplateHaskell-RebindableSyntax-MagicHash-OverloadedStrings-NoMonomorphismRestriction-ScopedTypeVariables-CPP-UnicodeSyntax-NegativeLiterals-BinaryLiterals-NumDecimals}; do
     desc="${exts#-}"
     desc="${desc//-/, }"
     is "haskell${exts//[a-z]/}" "I'm a Literate Haskell program${desc:+ ($desc)}." "$runhaskell" ${exts//-/ -X} "$tmp"
 done
-rm "$tmp"

@@ -65,7 +65,7 @@ printf("I'm a C++ program (trigraphs %sabled).\n",	 			 \
 } /*
  # \
 \begin{code}
-import Prelude hiding ((:)); import Data.List (intercalate); import Language.Haskell.TH; import Data.String; default (S, String, Integer); data S = S; instance Eq S where { _ == _ = False }; instance IsString S where { fromString = const S }; ifThenElse c t e = case c of True -> t; False -> e
+import Prelude hiding ((:)); import Data.List (intercalate); import Language.Haskell.TH; import Data.String; default (S, String, Integer, Double); data S = S; instance Eq S where { _ == _ = False }; instance IsString S where { fromString = const S }; ifThenElse c t e = case c of True -> t; False -> e
 cPP = False; {-
 #define cPP True
 -} main :: IO ()
@@ -81,7 +81,10 @@ main = putStr ("I'm a Literate Haskell program" ++ bonus ++ ".\n") where
     (noMonomorphismRestriction, "NoMonomorphismRestriction") :
     (scopedTypeVariables,       "ScopedTypeVariables"      ) :
     (cPP,                       "CPP"                      ) :
-    (unicodeSyntax,             "UnicodeSyntax"            ) : []
+    (unicodeSyntax,             "UnicodeSyntax"            ) :
+    (negativeLiterals,          "NegativeLiterals"         ) :
+    (binaryLiterals,            "BinaryLiterals"           ) :
+    (numDecimals,               "NumDecimals"              ) : []
   (!) = (!!)
   bangPatterns = [True] ! 0 where foo !bar = False
   templateHaskell = thc $(return (TupE []) :: ExpQ)
@@ -95,7 +98,12 @@ main = putStr ("I'm a Literate Haskell program" ++ bonus ++ ".\n") where
     bar = foo :: Double
   unicodeSyntax = let (★) = True in (*) where
     (*) = False
+  negativeLiterals = -1 == NNa
+  binaryLiterals = let b1 = 1 in 0b1 == 1
+  numDecimals = show 0e0 == "0"
   scopedTypeVariables = stv (0 :: Double) == "0.0"
+data{- = -} NN = NNa | NNb deriving Eq; instance Num NN where { fromInteger _ = NNa; negate _ = NNb; _ + _ = NNa; _ * _ = NNa; abs _ = NNa; signum _ = NNa }
+instance{- = -} (Num a) => Num (e -> a) where { fromInteger = const . fromInteger; negate = (.) negate; abs = (.) abs; signum = (.) signum; x + y = \e -> x e + y e; x * y = \e -> x e * y e }
 class THC a where { thc :: a -> Bool }; instance THC () where { thc _ = True }; instance THC (Q a) where { thc _ = False }; class (Show a, Num a) => STV a where
   stv :: a -> String
   stv = const $ show (f 0) where
